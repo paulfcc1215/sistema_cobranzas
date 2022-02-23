@@ -1,0 +1,42 @@
+.table.clickable tr:not(:nth-child(1)):hover {
+	cursor: pointer;
+	background-color: #AAFFD4;
+
+}
+
+.simple_table1 td {
+	padding: 5px;
+}
+.simple_table1 th {
+	padding: 5px;
+	text-align: right;
+}
+
+.titulo1{
+	width: 100%; 
+	padding: 4px; 
+	background-color: #267dff; 
+	display: inline-table;
+}
+.titulo1 p{
+	text-align: left; 
+	display: table-cell; 
+	vertical-align: middle; 
+	font-family: Arial; 
+	font-size: 25px; 
+	color: #ffffff; 
+	text-shadow: 1px 1px 1px hsl(0, 0%, 0%);
+}
+
+
+.simple_table2 td {
+	padding-left: 10px;
+	padding-right: 10px;
+	border-left: 1px solid rgb(109, 216, 235);
+}
+.simple_table2 th {
+	padding: 4px;
+	border-left: 1px solid rgb(98, 0, 255);
+	border-bottom: 1px solid rgb(98, 0, 255);
+	text-align: left;
+}

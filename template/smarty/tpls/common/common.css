@@ -1,0 +1,20 @@
+body {
+	margin-top: 50px;
+	background: url("left-background-1024x1024-op.jpg");
+	background-repeat: repeat-y;
+
+}
+
+table tr.clickable:hover {
+	cursor: pointer !important;
+	background-color: #D4FFD4 !important;
+}
+
+
+.table.table-small th {
+	font-size: 13px;
+}
+.table.table-small td {
+	font-size: 12px;
+}
+

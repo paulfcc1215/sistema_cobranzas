@@ -1,0 +1,1 @@
+Numero Identificacion	Numero Solicitud	Fecha de Pago	Hora de cobro	Valor pago	Canal Cobro	Forma de pago	Total

@@ -1,0 +1,61 @@
+.cliente_row td {
+	font-size: 15px !important;
+}
+.box_cliente .cliente_row.main_cuenta {
+	/*background-color: #FFD4AA;*/
+	font-weight: bold;
+	color: #FF7F00;
+}
+
+.selected_cuenta {
+	background-color: #FFFFD4 !important;
+}
+
+.table-gestiones thead tr {
+	background-color: #A5A5A5;
+}
+
+.table-gestiones .odd {
+	background-color: #D2D2D2;
+}
+
+.table-gestiones .even {
+	background-color: #E1E1E1;
+}
+
+.table-gestiones tbody tr:hover {
+	background-color: #AAFF7F;
+}
+
+.table-gestiones tbody td {
+	font-size: 15px !important;
+}
+
+.div-gestiones {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.detalle-compromiso {
+	background-color: #FF7FD4;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+.form-gestionar {
+	border: solid 1px #ccc;
+	border-radius: 0px 0px 5px 5px;
+	margin-bottom: 5px;
+}
+
+.form-gestionar table thead tr {
+	font-weight: bold;
+}
+
+.tabla-detalle-cuenta-otros-datos {
+    font-size: 80%;
+}
+
+.tabla-pagos {
+    font-size: 70%;
+}
