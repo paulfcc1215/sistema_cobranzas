@@ -17,7 +17,7 @@ class GenericoGestionesMasivas implements CargaModelo_Gestiones_Interface, Itera
 		
 		if (empty($this->tipif_map)) throw new Exception('No existe catálogo de tipificaciones para el proceso seleccionado');
 
-		// tipificaciones que no requieren tener id llamada
+		// tipificaciones que no requieren id_llamada
 		$sin_id_llamada = array(
 			'RESPUESTA MASIVA WHATSAPP',
 			'EMAIL-N',
@@ -81,7 +81,7 @@ class GenericoGestionesMasivas implements CargaModelo_Gestiones_Interface, Itera
 
 		fclose($fhdl);
 		$csv = new Helpers_CSV($fpath);
-		
+		$tipificacion = array();
 		foreach ($csv as $num_linea=>$linea) {
 			$linea['direccion']=str_replace(',','',$linea['direccion']);
 			//validaciones de data
@@ -167,7 +167,7 @@ class GenericoGestionesMasivas implements CargaModelo_Gestiones_Interface, Itera
 	function processRecord(&$line) {
 
 		$q1=$this->db->execute('_get_id_cuenta_by_cuenta_proceso',array($line['cuenta']));
-		//if(is_null($q1->current()['id_cuenta'])) return null; //throw new Exception('No existe cuenta '.$line['cuenta'].' para el proceso '.$this->id_proceso);
+		// if (is_null($q1->current()['id_cuenta'])) return null; //throw new Exception('No existe cuenta '.$line['cuenta'].' para el proceso '.$this->id_proceso);
 		if (is_null($q1->current()['id_cuenta'])) throw new Exception('No existe cuenta '.$line['cuenta'].' para el proceso '.$this->id_proceso);
 
 		$gestion = new CargaModelo_Item_Gestion();

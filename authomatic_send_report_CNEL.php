@@ -65,7 +65,6 @@
         ORDER BY
             g.fecha_inicio DESC,t.peso DESC';
     $gestiones_x_cuenta=array();
-    $xxx = array();
     foreach($db->query($q) as $aux) {
         $gestiones_x_cuenta[$aux['c_id_cuenta']][]=$aux;
     }

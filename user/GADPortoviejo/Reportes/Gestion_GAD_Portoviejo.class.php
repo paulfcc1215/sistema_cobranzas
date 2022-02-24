@@ -2,6 +2,7 @@
 
 	class Gestion_GAD_Portoviejo implements Reporte_Interface {
 		private $cache=array();
+		private $contactabilidad_enviado = array(317,319,316,315);
 
 		public function getCamposRequeridos() {
 			return array();
@@ -22,7 +23,7 @@
 					if ($_post['fecha_hasta']=='') throw new exception ('Seleccione Fecha Fin');
 					
 					$db = DB::getInstance();
-					$reporte = 'gestion_'.strtolower($udn['udn']).'_'.date('dmY').'.txt';
+					$reporte = 'gestion_GAD_PORTOVIEJO_'.date('dmY').'.txt';
 					$result[$reporte][]=array(
 						'CEDULARUC',
 						'NOMBRE',
@@ -88,6 +89,13 @@
 								$datos_nm[$row['campo']]=$row['valor'];
 							}
 							$tipificacion = getTipificacion($gestion['g_id_tipificacion']);
+							$contactabilidad = 'NO CONTACTADO';
+							if ($tipificacion['_metadata']['contactabilidad']){
+								$contactabilidad = 'CONTACTADO';
+							}
+							if (in_array($tipificacion['id_tipificacion'],$this->contactabilidad_enviado)){
+								$contactabilidad = 'ENVIADO';
+							}
 
 							//get telefono origen
 							$q = 'SELECT origen FROM medios_contacto.telefono WHERE id_persona='.$gestion['p_id_persona'].' AND telefono=\''.$gestion['g_tel_number'].'\'';
@@ -129,7 +137,7 @@
 								// 'GESTION PROVEEDOR',
 								'',
 								// 'CONTACTABILIDAD',
-								$tipificacion['_metadata']['contactabilidad']?'CONTACTADO':'NO CONTACTADO',
+								$contactabilidad,
 								// 'telefono_de_contacto',
 								$gestion['g_tel_number'],
 								// 'origen_telefono',
