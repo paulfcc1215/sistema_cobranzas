@@ -100,7 +100,7 @@
         $mail = new Helpers_Mail();
         $to = array(
             'paul.cedeno@recappt.com',
-            'artura.villafuerte@grupocant.com'
+            'arturo.villafuerte@grupocant.com'
         );
         $mail->add_attachment($file_zip);
         $subject = 'NOTIFICACION AUTOMATICA - DASHBOARD CNEL';

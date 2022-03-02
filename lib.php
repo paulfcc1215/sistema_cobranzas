@@ -141,7 +141,7 @@ function getCarpetasControles() {
 	
 }
 
-function getProcesosByCampId($camp_id) {
+function getProcesosByCampId($camp_id, $include_disabled=true) {
 	$db=DB::getInstance();
 	//$_AM['udns']=AutoModel::getInstance('estructura','udn',DB::getInstance());
 	$_AM['campanas']=AutoModel::getInstance('campanas','campana',DB::getInstance());
@@ -153,10 +153,19 @@ function getProcesosByCampId($camp_id) {
 
 	$ret=array();
 	foreach($procesos as $p) {
-		$ret[]=array(
-			'id_proceso'=>$p->id_proceso,
-			'descripcion'=>$p->descripcion
-		);
+		if($include_disabled){
+			$ret[]=array(
+				'id_proceso'=>$p->id_proceso,
+				'descripcion'=>$p->descripcion
+			);
+		}else{
+			if ($p->status){
+				$ret[]=array(
+					'id_proceso'=>$p->id_proceso,
+					'descripcion'=>$p->descripcion
+				);
+			}
+		}
 	}
 	rsort($ret);
 	return $ret;

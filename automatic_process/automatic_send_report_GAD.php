@@ -74,22 +74,22 @@
     $db->prepare('q2','SELECT campo,valor FROM cargas.carga_no_mapeada WHERE id_cuenta=$1 AND id_carga=$2');
     foreach ($gestiones_x_cuenta as $id_cuenta => $gestiones) {
         foreach ($gestiones as $gestion){
-            
+
             $q1 = $db->execute('q2',array($gestion['g_id_cuenta'],$gestion['c_id_carga']));
             while ($row = $db->fetchOne($q1)){
                 $datos_nm[$row['campo']]=$row['valor'];
             }
             $tipificacion = getTipificacion($gestion['g_id_tipificacion']);
-            
+
             //get telefono origen
             $q = 'SELECT origen FROM medios_contacto.telefono WHERE id_persona='.$gestion['p_id_persona'].' AND telefono=\''.$gestion['g_tel_number'].'\'';
             $q0 = $db->query($q);
             $origen = $db->fetchOne($q0)['origen'];
-            
+
             $fecha_gestion = new datetime($gestion['g_fecha_inicio']);
 
             $line = array(
-                
+
                 // 'CEDULARUC',
                 $gestion['p_identificacion'],
                 // 'NOMBRE',
@@ -161,11 +161,11 @@
 
     $file = new Helpers_CSV_Writer();
     $file->setLines($output);
-    $file_name = 'gestion_GAD_Portoviejo_'.date('dmY').'.txt';
+    $file_name = 'gestion_GAD_Portoviejo_'.date('dmY', strtotime($endDate)).'.txt';
     $file_path = $file->getFilePath();
     rename($file_path,$file_path='/tmp'.'/'.$file_name);
 
-    $file_zip = '/tmp/reporte_gestiones_GAD_'.date('dmY').'.zip';
+    $file_zip = '/tmp/reporte_gestiones_GAD_'.date('dmY', strtotime($endDate)).'.zip';
     $zip = new ZipArchive();
     if (!$zip->open($file_zip,ZipArchive::CREATE)){
         throw new Exception('Error al crear archivo ZIP');

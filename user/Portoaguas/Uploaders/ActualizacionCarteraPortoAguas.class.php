@@ -35,7 +35,8 @@ class CargadorActualizacion_CarteraPortoAguas extends CargaModelo_Uploadable_Abs
 			'VENCIMIENTO_FACTURA',
 			'LATITUD',
 			'LONGITUD',
-			'fecha_emision_mes'
+			'fecha_emision_mes',
+			'condonacion'
 		);
 
 		// $cabecera_pagos = array(
@@ -161,7 +162,7 @@ class CargadorActualizacion_CarteraPortoAguas extends CargaModelo_Uploadable_Abs
 		}
 
 		// correos deudor
-		$correo = $this->parseCorreos($correos);
+		$correo = $this->parseCorreos($line['CORREO_CLIENTE']);
 		if ($correo!=''){
 			$cuenta->persona_responsable->add_medio_contacto('CORREO',$line['CORREO_CLIENTE']);
 		}
@@ -184,6 +185,7 @@ class CargadorActualizacion_CarteraPortoAguas extends CargaModelo_Uploadable_Abs
 		$ret['otros_datos']['VENCIMIENTO_FACTURA'] = $line['VENCIMIENTO_FACTURA'];
 		$ret['otros_datos']['fecha_emision_mes'] = $line['fecha_emision_mes'];
 		$ret['otros_datos']['CIUDADELA'] = $line['CIUDADELA'];
+		$ret['otros_datos']['condonacion'] = $line['condonacion'];
 
 		return $ret;
 	}

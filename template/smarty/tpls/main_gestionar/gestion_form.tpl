@@ -1,6 +1,7 @@
 <script>
 ajaxBusy=false;
 gestionesToSave=[];
+var cuentas=new Array();
 
 function updateSelectedGestionForSave(cb) {
 	var checked=$(cb).prop("checked");
@@ -53,7 +54,8 @@ function guardarGestionAjax() {
 			data[name]=$(o).val();
 		}
 	});
-
+console.log(data['id_cuentas']);
+//return false;
 	$.ajax({
 		"url":"ajax.php?a=storeGestion",
 		"method":"POST",
@@ -102,7 +104,23 @@ function cancelGuardarGestion(btn) {
 function guardarGestionFromModal(btn) {
 	$(btn).parents(".modal").modal("hide");
 	guardarGestionAjax();
+}
 
+function selectedAllGestion(me){
+	gestionesToSave=new Array();
+	if ($(me).is(':checked')){
+		$.each($('#tbl_gestiones tbody tr input'),function(i,o){
+			$(o).attr('checked','checked');
+		})
+		for(var i in cuentas) {
+			gestionesToSave.push($(cuentas[i]).data("id-cuenta").toString());
+		}
+	}else{
+		$.each($('#tbl_gestiones tbody tr input'),function(i,o){
+			$(o).removeAttr('checked');
+		})
+	}
+	console.log(gestionesToSave);
 }
 
 function guardarGestion(btn) {
@@ -114,25 +132,25 @@ function guardarGestion(btn) {
 	var allowMultipleCuentas=true;
 
 	// validamos si hay mas de una cuenta
-	var cuentas=new Array();
+	cuentas = new Array();
 	
 	$("#table-cuentas tbody tr").each(function(k,o) {
 		cuentas.push(o);
 	});
 	
 	gestionesToSave=new Array();
-	gestionesToSave.push(cuentaSeleccionada.toString());
+	
 	if(allowMultipleCuentas && cuentas.length>1) {
-		var html="Por favor seleccione las cuentas en las que desea aplicar la gestión:<br><br>"
-		+"<table class='table table-small'>"
+		var html="Por favor seleccione las cuentas en las que desea aplicar la gestión:<br><br><input type='checkbox' id='seleccionarTodos' onchange='selectedAllGestion($(this))' checked>Todas"
+		+"<table class='table table-small' id='tbl_gestiones'>"
 		+"<thead>"
 		+"<tr>"
+		+"<th></th>"
 		+"<th>#</th>"
 		+"<th>Cuenta</th>"
 		+"<th>Identificacion</th>"
 		+"<th>Nombre</th>"
 		+"<th>Cedente</th>"
-		+"<th>Fecha Cuenta</th>"
 		+"<th>Valor Original</th>"
 		+"<th>Valor Actual</th>"
 		+"<th>% Pagado</th>"
@@ -140,8 +158,11 @@ function guardarGestion(btn) {
 		+"</thead>"
 		+"<tbody>";
 		for(var i in cuentas) {
+
+			gestionesToSave.push($(cuentas[i]).data("id-cuenta").toString());
+
 			html=html+"<tr>";
-			var checked=false;
+			var checked=true;
 			if($(cuentas[i]).data("id-cuenta")==cuentaSeleccionada) {
 				checked=true;
 			}
@@ -169,7 +190,7 @@ function guardarGestion(btn) {
 			]
 		});
 	}else{
-		
+		gestionesToSave.push(cuentaSeleccionada.toString());	
 		guardarGestionAjax();
 		
 	}

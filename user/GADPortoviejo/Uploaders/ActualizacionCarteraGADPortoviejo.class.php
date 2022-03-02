@@ -21,12 +21,15 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 			'añoemision',
 			'AñoObligacion',
 			'MesObligacion',
-			'total'
+			// 'total',
+			'valorbruto',
+			'intereses',
+			'recargos'
 		);
 
 		if (!mb_check_encoding(file_get_contents(_TMP_UPLOAD_FOLDER.'/'.$fpath_files['archivo_actualizacion']),'utf8')) throw new Exception('El archivo debe ser un .txt codificado en UTF-8');
 
-		$campos_numericos = array('total');
+		$campos_numericos = array('valorbruto','intereses','recargos');
 		$file = new Helpers_CSV(_TMP_UPLOAD_FOLDER.'/'.$fpath_files['archivo_actualizacion']);
 		//validar cabecera de actualizaciones
 		if (!empty(array_diff($cabecera_requerida,$file->getHeader()))) throw new Exception('Cabecera de archivo de actualizaciones incorrecta.');
@@ -42,9 +45,9 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 			}
 			// validaciones
 			if ($linea['id']=='') $validaciones['id'][$linea['id']][]='sin_cuenta';
-			if ($linea['total']=='') $validaciones['total'][$linea['id']][]='sin_deuda';
+			if ($linea['valorbruto']=='') $validaciones['valorbruto'][$linea['id']][]='sin_deuda';
 			if (!is_numeric($linea['id'])) $validaciones['id'][$linea['id']][]='no_numerico';
-			if (!is_numeric($linea['total'])) $validaciones['total'][$linea['id']][]='no_numerico';
+			if (!is_numeric($linea['valorbruto'])) $validaciones['valorbruto'][$linea['id']][]='no_numerico';
 
 			if (!in_array($linea['id'],array_keys($this->data))){
 				$this->data[$linea['id']]=$linea;
@@ -52,6 +55,7 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 			}else{
 				$this->data[$linea['id']]['persona_adicional'][]=$linea;
 			}
+
 		}
 		// echo 'inicio: '.date('H:i:s').'<br>';
 		// print_arr(count($this->data));
@@ -74,8 +78,8 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 
 		if ($line['id']=='') throw new Exception('No hay Id de predio en linea: '.$num_linea);
 		if (!is_numeric($line['id'])) throw new Exception('Id de predio incorrecto en linea: '.$num_linea);
-		if ($line['total']=='') throw new Exception('No hay deuda en linea: '.$num_linea);
-		if (!is_numeric($line['total'])) throw new Exception('La deuda debe ser un numero, en linea: '.$num_linea);
+		if ($line['valorbruto']=='') throw new Exception('No hay deuda en linea: '.$num_linea);
+		if (!is_numeric($line['valorbruto'])) throw new Exception('La deuda debe ser un numero, en linea: '.$num_linea);
 		if ($line['CEDULARUC']=='') throw new Exception('No hay identificacion en linea: '.$num_linea);
 		
 
@@ -86,7 +90,7 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 
 		$cuenta = new CargaModelo_Item_Cuenta();
 		$cuenta->numero_cuenta = $line['id'];
-		$cuenta->valor_actual = $line['total'];
+		$cuenta->valor_actual = floatval($line['valorbruto'])+floatval($line['intereses'])+floatval($line['recargos']);
 
 		// persona responsable
 		$cuenta->persona_responsable = new CargaModelo_Item_Persona();
@@ -143,6 +147,10 @@ class Cargador_ActualizacionCarteraGADPortoviejo extends CargaModelo_Uploadable_
 		$ret['otros_datos']['añoemision'] = $line['añoemision'];
 		$ret['otros_datos']['AñoObligacion'] = $line['AñoObligacion'];
 		$ret['otros_datos']['MesObligacion'] = $line['MesObligacion'];
+
+		$ret['otros_datos']['valorbruto'] = $line['valorbruto'];
+		$ret['otros_datos']['intereses'] = $line['intereses'];
+		$ret['otros_datos']['recargos'] = $line['recargos'];
 
 		return $ret;
 	}

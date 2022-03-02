@@ -1,6 +1,17 @@
 <?php
 
-	phpinfo();
+	//extraer .zip
+	// $dest = dirname(__FILE__).'/tmp/xxx/';
+	// $zip = new ZipArchive;
+	// if ($zip->open('xxx.zip') === TRUE) {
+	// 	$zip->extractTo($dest);
+	// 	$zip->close();
+	// 	echo 'ok';
+	// } else {
+	// 	echo 'failed';
+	// }
+
+	// phpinfo();
 	die();
 
     require 'config.php';

@@ -33,7 +33,8 @@ class Cargador_CarteraPortoAguas extends CargaModelo_Uploadable_Abstract impleme
 			'VENCIMIENTO_FACTURA',
 			'LATITUD',
 			'LONGITUD',
-			'fecha_emision_mes'
+			'fecha_emision_mes',
+			'condonacion'
 		);
 
 		$archivo = new Helpers_CSV(_TMP_UPLOAD_FOLDER.'/'.$fpath_files);
@@ -137,7 +138,8 @@ class Cargador_CarteraPortoAguas extends CargaModelo_Uploadable_Abstract impleme
 					'SALDO_CONVENIO' => $linea['SALDO_CONVENIO'],
 					'fecha de facturacion' => $linea['fecha de facturacion'],
 					'VENCIMIENTO_FACTURA' => $linea['VENCIMIENTO_FACTURA'],
-					'fecha_emision_mes' => $linea['fecha_emision_mes']
+					'fecha_emision_mes' => $linea['fecha_emision_mes'],
+					'condonacion' => $linea['condonacion']
 				)
 			);
 			$this->data[$linea['CUENTA']] = $data;
@@ -247,6 +249,7 @@ class Cargador_CarteraPortoAguas extends CargaModelo_Uploadable_Abstract impleme
 		$ret['otros_datos']['VENCIMIENTO_FACTURA'] = $line['cuenta']['VENCIMIENTO_FACTURA'];
 		$ret['otros_datos']['fecha_emision_mes'] = $line['cuenta']['fecha_emision_mes'];
 		$ret['otros_datos']['CIUDADELA'] = $line['cliente']['_direcciones'][0]['CIUDADELA'];
+		$ret['otros_datos']['condonacion'] = $line['cuenta']['condonacion'];
 
 		return $ret;
 	}

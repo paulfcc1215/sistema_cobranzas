@@ -87,7 +87,7 @@ switch($_GET['step']) {
                 break;
                 case 'getProcesos':
                     if(!preg_match('#^\d+$#',$_POST['id_camp'])) throw new Exception('Id Campaña Inválida');
-					$ret['data']=getProcesosByCampId($_POST['id_camp']);
+					$ret['data']=getProcesosByCampId($_POST['id_camp'],false);
                 break;
                 
                 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.33, created on 2021-07-28 16:41:35
+/* Smarty version 3.1.33, created on 2022-02-24 13:50:01
   from '/opt/www/cobranzas/template/smarty/tpls/main_gestionar/gestion_form.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.33',
-  'unifunc' => 'content_6101cf0f3ccc15_31649497',
+  'unifunc' => 'content_6217d359e17e55_52990221',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '341cc993189814e4bcbbb1c13fd7461cf8c98e5a' => 
     array (
       0 => '/opt/www/cobranzas/template/smarty/tpls/main_gestionar/gestion_form.tpl',
-      1 => 1627508488,
+      1 => 1645728598,
       2 => 'file',
     ),
   ),
@@ -20,12 +20,13 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6101cf0f3ccc15_31649497 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6217d359e17e55_52990221 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/www/cobranzas/lib/smarty/libs/plugins/function.fjjf_call_closure.php','function'=>'smarty_function_fjjf_call_closure',),));
 echo '<script'; ?>
 >
 ajaxBusy=false;
 gestionesToSave=[];
+var cuentas=new Array();
 
 function updateSelectedGestionForSave(cb) {
 	var checked=$(cb).prop("checked");
@@ -81,7 +82,8 @@ function guardarGestionAjax() {
 			data[name]=$(o).val();
 		}
 	});
-
+console.log(data['id_cuentas']);
+//return false;
 	$.ajax({
 		"url":"ajax.php?a=storeGestion",
 		"method":"POST",
@@ -130,7 +132,23 @@ function cancelGuardarGestion(btn) {
 function guardarGestionFromModal(btn) {
 	$(btn).parents(".modal").modal("hide");
 	guardarGestionAjax();
+}
 
+function selectedAllGestion(me){
+	gestionesToSave=new Array();
+	if ($(me).is(':checked')){
+		$.each($('#tbl_gestiones tbody tr input'),function(i,o){
+			$(o).attr('checked','checked');
+		})
+		for(var i in cuentas) {
+			gestionesToSave.push($(cuentas[i]).data("id-cuenta").toString());
+		}
+	}else{
+		$.each($('#tbl_gestiones tbody tr input'),function(i,o){
+			$(o).removeAttr('checked');
+		})
+	}
+	console.log(gestionesToSave);
 }
 
 function guardarGestion(btn) {
@@ -142,25 +160,25 @@ function guardarGestion(btn) {
 	var allowMultipleCuentas=true;
 
 	// validamos si hay mas de una cuenta
-	var cuentas=new Array();
+	cuentas = new Array();
 	
 	$("#table-cuentas tbody tr").each(function(k,o) {
 		cuentas.push(o);
 	});
 	
 	gestionesToSave=new Array();
-	gestionesToSave.push(cuentaSeleccionada.toString());
+	
 	if(allowMultipleCuentas && cuentas.length>1) {
-		var html="Por favor seleccione las cuentas en las que desea aplicar la gestión:<br><br>"
-		+"<table class='table table-small'>"
+		var html="Por favor seleccione las cuentas en las que desea aplicar la gestión:<br><br><input type='checkbox' id='seleccionarTodos' onchange='selectedAllGestion($(this))' checked>Todas"
+		+"<table class='table table-small' id='tbl_gestiones'>"
 		+"<thead>"
 		+"<tr>"
+		+"<th></th>"
 		+"<th>#</th>"
 		+"<th>Cuenta</th>"
 		+"<th>Identificacion</th>"
 		+"<th>Nombre</th>"
 		+"<th>Cedente</th>"
-		+"<th>Fecha Cuenta</th>"
 		+"<th>Valor Original</th>"
 		+"<th>Valor Actual</th>"
 		+"<th>% Pagado</th>"
@@ -168,8 +186,11 @@ function guardarGestion(btn) {
 		+"</thead>"
 		+"<tbody>";
 		for(var i in cuentas) {
+
+			gestionesToSave.push($(cuentas[i]).data("id-cuenta").toString());
+
 			html=html+"<tr>";
-			var checked=false;
+			var checked=true;
 			if($(cuentas[i]).data("id-cuenta")==cuentaSeleccionada) {
 				checked=true;
 			}
@@ -197,7 +218,7 @@ function guardarGestion(btn) {
 			]
 		});
 	}else{
-		
+		gestionesToSave.push(cuentaSeleccionada.toString());	
 		guardarGestionAjax();
 		
 	}
